@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Room Rent</title>
+        <link rel="icon" type="image/x-icon" href="https://i.imgur.com/Us7QXuQ.jpeg">
+    </head>
+<body>
+    <center>
+        <h1>Room Rent</h1>
+        <p>We have following rooms: 
+            1. Basic room - Rs.2000
+            2. Premium room - Rs.4000
+            3. Executive Suite - Rs.6000
+            4. Duplex Suite - Rs.8000
+        </p>
+
+
+        <form method="post">
+            <div class="form-group">
+                <div class="form-floating mb-3">
+                    <label for="cid">Customer Id</label>
+                    <input type="text" name="cid" placeholder="030" class="form-control"
+                        value="{{ request.form['cid'] }}" autofocus></input>
+                </div>
+                <div class="form-floating mb-3">
+                    <label for="roomchoice">Room Choice</label>
+                    <input type='number' name="roomchoice" placeholder="1-4" class="form-control"
+                        value="{{ request.form['roomchoice'] }}" autofocus></input>
+                </div>
+                <div class="form-floating mb-3">
+                    <label for="roomno">Customer room no</label>
+                    <input type='number' name="roomno" placeholder="205" class="form-control"
+                        value="{{ request.form['roomno'] }}" autofocus></input>
+                </div>
+                <div class="form-floating mb-3">
+                    <label for="nodays">No of days</label>
+                    <input type='number' name="nodays" placeholder="Number of days Customer will stay" class="form-control"
+                        value="{{ request.form['nodays'] }}" autofocus></input>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-lg btn-primary">Add Data</button>
+            </div>
+        </form>
+        {% if prin %}
+            <hr>
+            <span>{{ prin }}</a></span>
+        {% endif %}
+    </center>
+
+
+</body>
+
+</html>

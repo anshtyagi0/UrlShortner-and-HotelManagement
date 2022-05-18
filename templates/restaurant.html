@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Restaurant</title>
+        <link rel="icon" type="image/x-icon" href="https://i.imgur.com/Us7QXuQ.jpeg">
+    </head>
+<body>
+    <center>
+        <h1>Restaurant</h1>
+
+        <form method="post">
+            <div class="form-group">
+                <div class="form-floating mb-3">
+                    <label for="cid">Customer Id</label>
+                    <input type="text" name="cid" placeholder="030" class="form-control"
+                        value="{{ request.form['cid'] }}" autofocus></input><br>
+                    <label for="choose">Choose your meal:</label>
+                    <select name="choose" id="choose">
+                        <option value="1">Breakfast</option>
+                        <option value="2">Lunch or Dinner</option>
+                    </select><br>
+                </div>
+                <div class="form-floating mb-3">
+                    <label for="quantity">For how many members?</label>
+                    <select name="quantity" id="quantity">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-lg btn-primary">Add Data</button>
+            </div>
+        </form>
+        {% if prin %}
+            <hr>
+            <span>{{ prin }}</a></span>
+        {% endif %}
+    </center>
+
+
+</body>
+
+</html>

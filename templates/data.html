@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Search Data</title>
+        <link rel="icon" type="image/x-icon" href="https://i.imgur.com/Us7QXuQ.jpeg">
+    </head>
+
+<body>
+    <center>
+        <h1>Show data</h1>
+
+        <form method="post">
+            <div class="form-group">
+                <div class="form-floating mb-3">
+                    <label for="cid">Customer Id</label>
+                    <input type="text" name="cid" placeholder="030" class="form-control"
+                        value="{{ request.form['cid'] }}" autofocus></input>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-lg btn-primary">Show Data</button>
+            </div>
+        </form>
+        {% if para %}
+            <hr>
+            <span><p>{{ para }}<br>{{ cid }}<br>{{ name }}<br>{{ address }}<br>{{ age }}<br>{{ nation }}<br>{{ phone }}<br>{{ email }}</p></span>
+        {% endif %}
+    </center>
+
+
+</body>
+
+</html>

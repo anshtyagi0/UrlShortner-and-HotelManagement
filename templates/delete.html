@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Delete Data</title>
+        <link rel="icon" type="image/x-icon" href="https://i.imgur.com/Us7QXuQ.jpeg">
+    </head>
+
+<body>
+    <center>
+        <h1>Delete data</h1>
+
+        <form method="post">
+            <div class="form-group">
+                <div class="form-floating mb-3">
+                    <label for="cid">Customer Id</label>
+                    <input type="text" name="cid" placeholder="030" class="form-control"
+                        value="{{ request.form['cid'] }}" autofocus></input><br>
+                    <label for="choose">Choose from which table data should be removed: </label>
+                    <select name="choose" id="choose">
+                        <option value = 'all'>All Tables</option>
+                        <option value="bookings">Bookings</option>
+                        <option value="customer">Customer Details</option>
+                        <option value="restaurant">Restaurant</option>
+                        <option value="roomrent">Room Rent</option>
+                        <option value="total">Grand Total</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-lg btn-primary">Delete Data</button>
+            </div>
+        </form>
+        {% if para %}
+            <hr>
+            <span><p>{{ para }}<br>{{ cid }}<br>{{ name }}<br>{{ address }}<br>{{ age }}<br>{{ nation }}<br>{{ phone }}<br>{{ email }}</p></span>
+        {% endif %}
+    </center>
+
+
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Customer Details</title>
+        <link rel="icon" type="image/x-icon" href="https://i.imgur.com/Us7QXuQ.jpeg">
+    </head>
+
+<body>
+    <center>
+        <h1>Customer Details</h1>
+
+        <form method="post">
+            <div class="form-group">
+                <div class="form-floating mb-3">
+                    <label for="cid">Customer Id</label>
+                    <input type="text" name="cid" placeholder="030" class="form-control"
+                        value="{{ request.form['cid'] }}" autofocus></input>
+                </div>
+                <div class="form-floating mb-3">
+                    <label for="name">Customer Name</label>
+                    <input type='text' name="name" placeholder="Ansh" class="form-control"
+                        value="{{ request.form['name'] }}" autofocus></input>
+                </div>
+                <div class="form-floating mb-3">
+                    <label for="address">Customer Address</label>
+                    <input type='text' name="address" placeholder="Indirapuram" class="form-control"
+                        value="{{ request.form['address'] }}" autofocus></input>
+                </div>
+                <div class="form-floating mb-3">
+                    <label for="age">Customer Age</label>
+                    <input type='text' name="age" placeholder="17" class="form-control"
+                        value="{{ request.form['age'] }}" autofocus></input>
+                </div>
+                <div class="form-floating mb-3">
+                    <label for="nationality">Customer Nationality</label>
+                    <input type='text' name="nationality" placeholder="India" class="form-control"
+                        value="{{ request.form['nationality'] }}" autofocus></input>
+                </div>
+                <div class="form-floating mb-3">
+                    <label for="phoneno">Customer Phoneno</label>
+                    <input type='text' name="phoneno" placeholder="8920786473" class="form-control"
+                        value="{{ request.form['phoneno'] }}" autofocus></input>
+                </div>
+                <div class="form-floating mb-3">
+                    <label for="email">Customer email</label>
+                    <input type='text' name="email" placeholder="anshtyagi@bhbotlist.tech" class="form-control"
+                        value="{{ request.form['email'] }}" autofocus></input>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-lg btn-primary">Add Data</button>
+            </div>
+        </form>
+        {% if prin %}
+            <hr>
+            <span>{{ prin }}</a></span>
+        {% endif %}
+    </center>
+
+
+</body>
+
+</html>
