@@ -430,6 +430,8 @@ def getlink(SHORT):
     SHORT = str(SHORT)
     conn = connection()
     mydb = conn.cursor()
+    mydb.execute("CREATE DATABASE IF NOT EXISTS schoolproject")
+    mydb.execute("USE schoolproject")
     try:
         query = 'SELECT LINK FROM urls WHERE SHORT = %s '
         mydb.execute(query, (SHORT))
