@@ -1,7 +1,7 @@
-# Project by Ansh Tyagi & Itisha Singh
+# Canary
 
-<p>This is a url shortner and a Hotel Management system which is fully operational and user friendly.This system uses Mysql as database.<br>
-  This system is based on flask as it is a web based system. You can use your own domain to connect to this but as it is only a project we recommand you to do run without domain.</p>
+<p>Canary is a url shortner and a Hotel Management system which is fully operational and user friendly.This system uses Mysql as database.<br>
+  This system is based on flask as it is a web based system. You can use your own domain to connect to this but as it is only a project we recommand you to do run it without domain on localhost.</p>
 
 ## How to use this
 **Download Python:** [Download](https://python.org/download)
