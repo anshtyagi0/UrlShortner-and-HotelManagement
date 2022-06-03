@@ -1,50 +1,148 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Hotel Main page</title>
-        <link rel="icon" type="image/x-icon" href="https://i.imgur.com/Us7QXuQ.jpeg">
-    </head>
-<body>
-    <center>
-        <h1>Hotel Management System</h1>
 
-        <style>
-            a:link,
-            a:visited {
-                background-color: #f44336;
-                color: white;
-                padding: 14px 25px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
+<head>
+    <title>Hotel Main page</title>
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/Us7QXuQ.jpeg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Center the loader */
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 120px;
+            height: 120px;
+            margin: -76px 0 0 -76px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
             }
 
-            a:hover,
-            a:active {
-                background-color: red;
+            100% {
+                -webkit-transform: rotate(360deg);
             }
-        </style>
-        <p>Click below to add Customer Details.</p>
-        <a href="/hotel/customerdetails">Customer Details</a>
+        }
 
-        <p>Click below to use Booking.</p>
-        <a href="/hotel/booking">Booking</a>
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
 
-        <p>Click below to use Room Rent service</p>
-        <a href="/hotel/roomrent">Room Rent</a>
+            100% {
+                transform: rotate(360deg);
+            }
+        }
 
-        <p>Click below to use Restaurant service</p>
-        <a href="/hotel/restaurant">Restaurant</a>
+        /* Add animation to "page content" */
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
 
-        <p>Click below to get Data of a customer</p>
-        <a href="/hotel/showrecord">Data</a>
+        @-webkit-keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
 
-        <p>Click below to get Total bill</p>
-        <a href="/hotel/total">Total</a>
+            to {
+                bottom: 0px;
+                opacity: 1
+            }
+        }
 
-        <p>Click below to Delete data</p>
-        <a href="/hotel/delete">delete</a>
+        @keyframes animatebottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
 
-    </center>
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        #myDiv {
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body onload="myFunction()" style="margin:0;">
+
+    <div id="loader"></div>
+
+    <div style="display:none;" id="myDiv" class="animate-bottom">
+        <a href="/">Home</a>
+        <body>
+            <center>
+                <h1>Hotel Management System</h1>
+
+                <style>
+                    a:link,
+                    a:visited {
+                        background-color: #f44336;
+                        color: white;
+                        padding: 14px 25px;
+                        text-align: center;
+                        text-decoration: none;
+                        display: inline-block;
+                    }
+
+                    a:hover,
+                    a:active {
+                        background-color: red;
+                    }
+                </style>
+                <p>Click below to add Customer Details.</p>
+                <a href="/hotel/customerdetails">Customer Details</a>
+
+                <p>Click below to use Booking.</p>
+                <a href="/hotel/booking">Booking</a>
+
+                <p>Click below to use Room Rent service</p>
+                <a href="/hotel/roomrent">Room Rent</a>
+
+                <p>Click below to use Restaurant service</p>
+                <a href="/hotel/restaurant">Restaurant</a>
+
+                <p>Click below to get Data of a customer</p>
+                <a href="/hotel/showrecord">Data</a>
+
+                <p>Click below to get Total bill</p>
+                <a href="/hotel/total">Total</a>
+
+                <p>Click below to Delete data</p>
+                <a href="/hotel/delete">delete</a>
+
+            </center>
+
+            <script>
+                var myVar;
+
+                function myFunction() {
+                    myVar = setTimeout(showPage, 3000);
+                }
+
+                function showPage() {
+                    document.getElementById("loader").style.display = "none";
+                    document.getElementById("myDiv").style.display = "block";
+                }
+            </script>
+        </body>
 </body>
+
 </html>

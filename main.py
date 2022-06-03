@@ -1,7 +1,16 @@
+#installing modules
+import os
+os.system("pip3 install -r requirements.txt")
+import sys
+if sys.platform == 'darwin':
+    os.system("source ~/.bash_profile")
+    print("Ready for mac.")
+
 # Importing modules
 from flask import Flask, request, jsonify, redirect, render_template
 import pymysql
 import shortuuid
+import webbrowser
 
 # defining url for website & table name & defining template folders.
 baseurl = 'http://127.0.0.1:10000'
@@ -9,12 +18,12 @@ table_name = 'urls'
 app = Flask(__name__, template_folder='templates')
 
 # Setting up mysql connection
-
-
 def connection():
     connection = pymysql.connect(host='localhost', user='root', password='123456',
                                  charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
     return connection
+
+webbrowser.open('http://localhost:10000')
 
 # Main page of site
 
@@ -71,7 +80,7 @@ def hotelpage():
 @app.route('/hotel/customerdetails', methods=['GET', 'POST'])
 def customerdetails():
     if request.method == 'POST':
-        createTable = """CREATE TABLE IF NOT EXISTS customer_details(CID VARCHAR(20) PRIMARY KEY,NAME VARCHAR(30),ADDRESS VARCHAR(30),AGE INT,NATIONALITY VARCHAR(30) ,PHONENO CHAR(10),EMAIL VARCHAR(30));"""
+        createTable = """CREATE TABLE IF NOT EXISTS customer_details(CID VARCHAR(20),NAME VARCHAR(30),ADDRESS VARCHAR(30),AGE INT,NATIONALITY VARCHAR(30) ,PHONENO CHAR(10),EMAIL VARCHAR(30));"""
         cid = request.form['cid']
         name = request.form['name']
         address = request.form['address']
@@ -84,16 +93,11 @@ def customerdetails():
         mydb.execute("CREATE DATABASE IF NOT EXISTS schoolproject")
         mydb.execute("USE schoolproject")
         mydb.execute(createTable)
-        try:
-            query1 = f"""SELECT CID FROM customer_details WHERE CID = {cid}"""
-            mydb.execute(query1)
-            u=mydb.fetchone()['CID']
-            return jsonify({'error': f'Customer Id : {cid} is already in use.'})
-        except:
-            query = """INSERT INTO customer_details(cid, name, address,age,nationality,phoneno,email) VALUES('{}','{}','{}','{}','{}','{}','{}')""".format(cid, name, address, age, nationality, phoneno, email)
-            mydb.execute(query)
-            conn.commit()
-            return render_template('customerdetails.html', prin="New Customer added to data.")
+        query = """INSERT INTO customer_details(cid, name, address,age,nationality,phoneno,email) VALUES('{}','{}','{}','{}','{}','{}','{}')""".format(
+            cid, name, address, age, nationality, phoneno, email)
+        mydb.execute(query)
+        conn.commit()
+        return render_template('customerdetails.html', prin="New Customer added to data.")
     return render_template('customerdetails.html')
 
 # hotel bookings
@@ -102,7 +106,7 @@ def customerdetails():
 @app.route('/hotel/booking', methods=['GET', 'POST'])
 def booking():
     if request.method == 'POST':
-        createTable = """CREATE TABLE IF NOT EXISTS BOOKING(CID VARCHAR(20) PRIMARY KEY,CHECK_IN DATE,CHECK_OUT DATE);"""
+        createTable = """CREATE TABLE IF NOT EXISTS BOOKING(CID VARCHAR(20),CHECK_IN DATE,CHECK_OUT DATE);"""
         cid = request.form['cid']
         checkin = request.form['checkin']
         checkout = request.form['checkout']
@@ -111,16 +115,11 @@ def booking():
         mydb.execute("CREATE DATABASE IF NOT EXISTS schoolproject")
         mydb.execute("USE schoolproject")
         mydb.execute(createTable)
-        try:
-            query1 = f"""SELECT CID FROM BOOKING WHERE CID = {cid}"""
-            mydb.execute(query1)
-            u=mydb.fetchone()['CID']
-            return render_template('bookings.html', prin="We already have booking at that customer id.")
-        except:
-            query = """INSERT INTO booking(cid,check_in,check_out) VALUES('{}','{}','{}')""".format(cid, checkin, checkout)
-            mydb.execute(query)
-            conn.commit()
-            return render_template('bookings.html', prin="New Booking added.")
+        query = """INSERT INTO booking(cid,check_in,check_out) VALUES('{}','{}','{}')""".format(
+            cid, checkin, checkout)
+        mydb.execute(query)
+        conn.commit()
+        return render_template('bookings.html', prin="New Booking added.")
     return render_template("bookings.html")
 
 # hotel room rent
@@ -129,12 +128,12 @@ def booking():
 @app.route('/hotel/roomrent', methods=['GET', 'POST'])
 def roomrent():
     if request.method == 'POST':
-        createTable = """CREATE TABLE IF NOT EXISTS ROOM_RENT(CID VARCHAR(20) PRIMARY KEY,ROOM_CHOICE INT,NO_OF_DAYS INT,ROOM_NO INT ,ROOMBILL INT);"""
+        createTable = """CREATE TABLE IF NOT EXISTS ROOM_RENT(CID VARCHAR(20),ROOM_CHOICE INT,NO_OF_DAYS INT,ROOM_NO INT ,ROOMBILL INT);"""
         cid = request.form['cid']
-        room_choice = int(request.form['roomchoice'])
+        room_choice = int(request.form.get('roomchoice'))
         print(room_choice)
         room_no = int(request.form['roomno'])
-        no_of_days = int(request.form['nodays'])
+        no_of_days = int(request.form.get('nodays'))
         if room_choice == 1:
             roomrent = no_of_days*2000
         elif room_choice == 2:
@@ -152,15 +151,9 @@ def roomrent():
         mydb.execute("CREATE DATABASE IF NOT EXISTS schoolproject")
         mydb.execute("USE schoolproject")
         mydb.execute(createTable)
-        try:
-            query1 = f"""SELECT CID FROM ROOM_RENT WHERE CID = {cid}"""
-            mydb.execute(query1)
-            u=mydb.fetchone()['CID']
-            return jsonify({'error': f'Customer already has a room on this Id.'})
-        except:
-            mydb.execute(query)
-            conn.commit()
-            return render_template("roomrent.html", prin=f"Thanks! Your Room is booked for {no_of_days} days and total room rent is Rs.{roomrent}/-")
+        mydb.execute(query)
+        conn.commit()
+        return render_template("roomrent.html", prin=f"Thanks! Your Room is booked for {no_of_days} days and total room rent is Rs.{roomrent}/-")
     return render_template("roomrent.html")
 
 # Hotel Restaurant
@@ -169,7 +162,7 @@ def roomrent():
 @app.route("/hotel/restaurant", methods=['GET', 'POST'])
 def restaurant():
     if request.method == 'POST':
-        createTable = """CREATE TABLE IF NOT EXISTS RESTAURANT(CID VARCHAR(20) PRIMARY KEY,MEAL_CHOICE INT,QUANTITY INT,RESTAURANT_BILL INT);"""
+        createTable = """CREATE TABLE IF NOT EXISTS RESTAURANT(CID VARCHAR(20),MEAL_CHOICE INT,QUANTITY INT,RESTAURANT_BILL INT);"""
         conn = connection()
         mydb = conn.cursor()
         mydb.execute("CREATE DATABASE IF NOT EXISTS schoolproject")
@@ -190,21 +183,9 @@ def restaurant():
 
         query = """INSERT INTO restaurant(cid,meal_choice,quantity,restaurant_bill)VALUES('{}','{}','{}',' {}')""".format(
             cid, meal_choice, quantity, restaurant_bill)
-        try:
-            query1 = f"""SELECT CID FROM RESTAURANT WHERE CID = {cid}"""
-            mydb.execute(query1)
-            u=mydb.fetchone()['CID']
-            query1 = f"""SELECT RESTAURANT_BILL FROM RESTAURANT WHERE CID = {cid}"""
-            mydb.execute(query1)
-            u=mydb.fetchone()['RESTAURANT_BILL']
-            query = f"""UPDATE RESTAURANT SET RESTAURANT_BILL = {u+restaurant_bill} WHERE CID = {cid}"""
-            mydb.execute(query)
-            conn.commit()
-            return render_template("restaurant.html", prin=f"Your total bill for meal is Rs.{restaurant_bill}/- and total restaurant bill is Rs.{u+restaurant_bill} (including old)")
-        except:
-            mydb.execute(query)
-            conn.commit()
-            return render_template("restaurant.html", prin=f"Your total bill for meal is Rs.{restaurant_bill}/-")
+        mydb.execute(query)
+        conn.commit()
+        return render_template("restaurant.html", prin=f"Your total bill for meal is Rs.{restaurant_bill}/-")
     return render_template("restaurant.html")
 
 # room rent function
@@ -217,14 +198,9 @@ def room_rent(cid):
     mydb.execute("USE schoolproject")
     query1 = f"SELECT ROOMBILL FROM ROOM_RENT WHERE CID = {cid}"
     mydb.execute(query1)
-    try:
-        roomrent = mydb.fetchone()['ROOMBILL']
-        print(roomrent)
-        return roomrent
-    except:
-        roomrent = 0
-        print(roomrent)
-        return roomrent
+    roomrent = mydb.fetchone()['ROOMBILL'] or 0
+    print(roomrent)
+    return roomrent
 
 # restaurent function
 
@@ -236,14 +212,9 @@ def rest(cid):
     mydb.execute("USE schoolproject")
     query1 = f"SELECT RESTAURANT_BILL FROM RESTAURANT WHERE CID = {cid}"
     mydb.execute(query1)
-    try:
-        roomrent = mydb.fetchone()['RESTAURANT_BILL']
-        print(roomrent)
-        return roomrent
-    except:
-        roomrent = 0
-        print(roomrent)
-        return roomrent
+    roomrent = mydb.fetchone()['RESTAURANT_BILL'] or 0
+    print(roomrent)
+    return roomrent
 
 # hotel total bill
 
@@ -251,7 +222,7 @@ def rest(cid):
 @app.route("/hotel/total", methods=['GET', 'POST'])
 def total():
     if request.method == 'POST':
-        createTable = """CREATE TABLE IF NOT EXISTS TOTAL_AMOUNT(CID VARCHAR(20) PRIMARY KEY,ROOMBILL INT ,RESTAURANT_BILL INT ,GRANDTOTAL INT)"""
+        createTable = """CREATE TABLE IF NOT EXISTS TOTAL_AMOUNT(CID VARCHAR(20),ROOMBILL INT ,RESTAURANT_BILL INT ,GRANDTOTAL INT)"""
         conn = connection()
         mydb = conn.cursor()
         mydb.execute("CREATE DATABASE IF NOT EXISTS schoolproject")
@@ -430,6 +401,8 @@ def getlink(SHORT):
     SHORT = str(SHORT)
     conn = connection()
     mydb = conn.cursor()
+    mydb.execute("CREATE DATABASE IF NOT EXISTS schoolproject")
+    mydb.execute("USE schoolproject")
     try:
         query = 'SELECT LINK FROM urls WHERE SHORT = %s '
         mydb.execute(query, (SHORT))
