@@ -10,7 +10,12 @@ if sys.platform == 'darwin':
 from flask import Flask, request, jsonify, redirect, render_template
 import pymysql
 import shortuuid
+from tempfile import NamedTemporaryFile
+from InvoiceGenerator.api import Invoice, Item, Client, Provider, Creator
+from InvoiceGenerator.pdf import SimpleInvoice
 import webbrowser
+
+os.environ["INVOICE_LANG"] = "en"
 
 # defining url for website & table name & defining template folders.
 baseurl = 'http://127.0.0.1:10000'
@@ -393,6 +398,91 @@ def delete():
         except:
             return jsonify({"Error": "Data not found."})
     return render_template("delete.html")
+
+#invoice
+def cuname(cid):
+    conn = connection()
+    mydb = conn.cursor()
+    mydb.execute("CREATE DATABASE IF NOT EXISTS schoolproject")
+    mydb.execute("USE schoolproject")
+
+    mydb.execute(f'SELECT NAME FROM customer_details WHERE CID = {cid}')
+    name=mydb.fetchone()['NAME']
+    conn.commit()
+    return name
+
+def roomrentforin(cid):
+    conn = connection()
+    mydb = conn.cursor()
+    mydb.execute("CREATE DATABASE IF NOT EXISTS schoolproject")
+    mydb.execute("USE schoolproject")
+
+    mydb.execute(f'SELECT ROOM_CHOICE FROM ROOM_RENT WHERE CID = {cid}')
+    choice = mydb.fetchone()['ROOM_CHOICE']
+    mydb.execute(f'SELECT NO_OF_DAYS FROM ROOM_RENT WHERE CID = {cid}')
+    days = mydb.fetchone()['NO_OF_DAYS']
+    conn.commit()
+    price=0
+    if choice == 1:
+        price+=2000
+    elif choice == 2:
+        price+=4000
+    elif choice == 3:
+        price+=6000
+    elif choice == 4:
+        price+=8000
+    return price, days
+
+def restaurantforin(cid):
+    conn = connection()
+    mydb = conn.cursor()
+    mydb.execute("CREATE DATABASE IF NOT EXISTS schoolproject")
+    mydb.execute("USE schoolproject")
+
+    mydb.execute(f'SELECT MEAL_CHOICE FROM RESTAURANT WHERE CID = {cid}')
+    choice = mydb.fetchone()['MEAL_CHOICE']
+    mydb.execute(f'SELECT QUANTITY FROM RESTAURANT WHERE CID = {cid}')
+    quantity = mydb.fetchone()['QUANTITY']
+    conn.commit()
+    price=0
+    if choice == 1:
+        price+=300
+    elif choice == 2:
+        price+=500
+    return price, quantity
+
+
+@app.route('/hotel/invoice', methods=['GET', 'POST'])
+def invoice():
+    if request.method == 'POST':
+        conn = connection()
+        mydb = conn.cursor()
+        mydb.execute("CREATE DATABASE IF NOT EXISTS schoolproject")
+        mydb.execute("USE schoolproject")
+        cid = request.form['cid']
+        try:
+            name=cuname(cid)
+            days = roomrentforin(cid)[1]
+            price = roomrentforin(cid)[0]
+            restquan = restaurantforin(cid)[1]
+            restprice = restaurantforin(cid)[0]
+
+            client = Client(f'{cid}.'+f' {name}')
+            provider = Provider('Canary', bank_account='2600420569', bank_code='2022')
+            creator = Creator('ANSH TYAGI')
+
+            invoice = Invoice(client, provider, creator)
+            invoice.currency='Rs.'
+            invoice.add_item(Item(days, price,description='Room Rent'))
+            invoice.add_item(Item(restquan, restprice, description='Restaurant'))
+
+            pdf = SimpleInvoice(invoice)
+            pdf.gen(f"invoice.pdf", generate_qr_code=True)
+            return jsonify({"SUCCESS": "CHECK SAME DIRECTORY TO SEE PDF."})
+        except:
+            return jsonify({"Error": 'Data not found!'})
+    return render_template("invoice.html")
+
 
 
 # redirecting to long link
