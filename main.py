@@ -7,7 +7,7 @@ if sys.platform == 'darwin':
     print("Ready for mac.")
 
 # Importing modules
-from flask import Flask, request, jsonify, redirect, render_template
+from flask import Flask, request, jsonify, redirect, render_template, send_from_directory
 import pymysql
 import shortuuid
 from tempfile import NamedTemporaryFile
@@ -477,8 +477,10 @@ def invoice():
             invoice.add_item(Item(restquan, restprice, description='Restaurant'))
 
             pdf = SimpleInvoice(invoice)
-            pdf.gen(f"invoice.pdf", generate_qr_code=True)
-            return jsonify({"SUCCESS": "CHECK SAME DIRECTORY TO SEE PDF."})
+            pdf.gen(f"./templates/invoice.pdf", generate_qr_code=True)
+            workingdir = os.path.abspath(os.getcwd())
+            filepath = workingdir + '/templates/'
+            return send_from_directory(filepath, 'invoice.pdf')
         except:
             return jsonify({"Error": 'Data not found!'})
     return render_template("invoice.html")
