@@ -1,4 +1,4 @@
-Flask==2.1.1
+Flask==2.2.5
 InvoiceGenerator==1.1.0
 mysqlansh==1.0.0
 pymysql==1.0.2
