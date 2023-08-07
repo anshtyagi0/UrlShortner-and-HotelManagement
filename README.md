@@ -38,5 +38,5 @@ This project is only for education purpose and not for commercial use. We will n
 
 
 ## Credit
-```Ansh Tyagi, Itisha Singh```
+[Ansh Tyagi](https://github.com/anshtyagi0)
 ##
