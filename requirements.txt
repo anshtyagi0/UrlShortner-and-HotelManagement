@@ -1,5 +1,5 @@
 Flask==2.2.5
 InvoiceGenerator==1.1.0
 mysqlansh==1.0.0
-pymysql==1.0.2
+pymysql==1.1.1
 shortuuid==1.0.9
